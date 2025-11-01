@@ -63,8 +63,8 @@ jobs:
               - A `## Summary` section, containing a tabular overview of the changes made (columns: `File` and `Description` where description is a single-sentence summary of the changes):
                 - If newly opened PR, give a summary of the changes introduced by the PR
                 - If existing PR got updated, give a summary of the changes between now and the last review
-              - A `## Feedback Overview` section, containing a tabular summary of the issues/topics you raised (columns: `File`, `Issue`, `Severity`, and `Summary` where issue is the issue/topic you raised, severity is the severity of the issue (low, medium, high), and summary is a single-sentence summary of the feedback/solution you proposed):
-              - A `## Feedback` section, containing your feedback for each of the issues/topics you raised. Add a dedicated subheading for each issue/topic you raised.
+              - A `## Feedback Overview` section, containing a tabular summary of the issues/topics you raised (columns: `File`, `Issue`, `Severity`, and `Summary` where issue is the issue/topic you raised, severity is the severity of the issue (low, medium, high), and summary is a single-sentence summary of the feedback/solution you proposed). Keep the table empty if no issues/topics were raised. Sort the table by severity, with highest severity first.
+              - A `## Feedback` section, containing your feedback for each of the issues/topics you raised. Add a dedicated subheading for each issue/topic you raised. Keep the same order as the issues/topics in the `## Feedback Overview` section. Always make sure to provide a solution for each issue/topic you raised.
 
             Pull request title and body:
             ----
