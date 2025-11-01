@@ -14,8 +14,9 @@ jobs:
       fail-fast: true
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
+        with-fastapi-api: ["false", "true"]
 
-    name: "Copier: Python ${{ matrix.python-version }}"
+    name: "Copier: Python ${{ matrix.python-version }} with FastAPI API: ${{ matrix.with-fastapi-api }}"
 
     steps:
       - name: Checkout
@@ -34,12 +35,12 @@ jobs:
           uvx copier copy --vcs-ref=HEAD . my-project \
             --defaults \
             --data project_name="My Project" \
-            --data project_description="A dummy Python project." \
+            --data project_description="A dummy ${{ matrix.python-version }} Python project (with FastAPI API: ${{ matrix.with-fastapi-api }})." \
             --data project_url="https://github.com/user/repo" \
             --data author_name="John Doe" \
             --data author_email="john.doe@example.com" \
-            --data python_version="3.12" \
-            --data with_fastapi_api=true \
+            --data python_version="${{ matrix.python-version }}" \
+            --data with_fastapi_api="${{ matrix.with-fastapi-api }}"
           cd my-project
           git config --global init.defaultBranch main
           git init

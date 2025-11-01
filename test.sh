@@ -9,7 +9,7 @@ with_fastapi_api=("false" "true")
 for with_fastapi_api in "${with_fastapi_api[@]}"; do
     echo ""
     echo "-----------------------------------------------------------"
-    echo "Testing Copier configuration with FastAPI API: ${with_fastapi_api}..."
+    echo "Testing Copier configuration with FastAPI API: ${with_fastapi_api} ..."
     echo "-----------------------------------------------------------"
     echo ""
 
@@ -21,7 +21,7 @@ for with_fastapi_api in "${with_fastapi_api[@]}"; do
         --data project_url="https://github.com/user/repo" \
         --data author_name="John Smith" \
         --data author_email="john@example.com" \
-        --data python_version="3.10" \
+        --data python_version="3.12" \
         --data with_fastapi_api=${with_fastapi_api} \
 
     cd my-project
