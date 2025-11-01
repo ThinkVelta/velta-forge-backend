@@ -30,7 +30,7 @@ def test_lifespan_removes_logging_handlers() -> None:
         assert temporary_handler in logging.root.handlers
 
         with TestClient(app) as client:
-            response = client.get("/hello_world")
+            response = client.get("/health")
         assert httpx.codes.is_success(response.status_code)
         assert temporary_handler not in logging.root.handlers
     finally:
