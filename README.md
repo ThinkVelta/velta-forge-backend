@@ -30,7 +30,7 @@ Velta Forge (Backend) is Velta's official Copier template for bootstrapping mode
 | Tooling | `pyproject.toml` with FastAPI (optional), uv, Poe, pytest, Ruff, coverage, Commitizen, and pre-commit hooks.
 | Dev environment | `.devcontainer/`, Dockerfile, docker-compose services, and VS Code recommendations.
 | CI/CD | `.github/workflows/` for PR checks, change summary, testing, and optional deploy/publish jobs; `dependabot.yml` for automated upgrades.
-| Docs & metadata | Template `README.md`, `AGENTS.md`, `CHANGELOG.md`, `LICENSE`, and Linear/Codex-friendly defaults.
+| Docs & metadata | Template `README.md`, `AGENTS.md`, `CHANGELOG.md`, and Linear/Codex-friendly defaults.
 
 ## 🚀 Create a new backend service
 
