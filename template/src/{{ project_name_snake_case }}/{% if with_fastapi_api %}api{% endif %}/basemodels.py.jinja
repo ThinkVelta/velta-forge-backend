@@ -1,0 +1,13 @@
+"""Pydantic basemodels."""
+
+from pydantic import BaseModels, Field
+
+
+class HealthResponse(BaseModel):
+    """Schema for the /health endpoint response."""
+
+    status: str = Field(
+        ...,
+        title="Status",
+        description="Health status.""",
+    )

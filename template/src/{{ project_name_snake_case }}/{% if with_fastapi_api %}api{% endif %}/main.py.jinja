@@ -6,6 +6,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from {{ project_name_snake_case }}.api.basemodels import HealthResponse
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
@@ -13,6 +15,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     # Startup events.
     for handler in list(logging.root.handlers):
         logging.root.removeHandler(handler)
+
     yield
     # Shutdown events.
 
@@ -20,13 +23,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
 app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/hello_world")
-async def hello_world() -> str:
-    """Return a dummy greeting."""
-    return "Hello World!"
-
-
-@app.get("/health")
-async def healthcheck() -> dict[str, str]:
+@app.get(
+    "/health",
+    summary="Health check",
+    description="Perform a basic health check to confirm the API is responsive.",
+    response_model=HealthResponse,
+    responses={
+        200: {
+            "description": "Service is healthy",
+            "content": {
+                "application/json": {
+                    "example": {"status": "ok"}
+                }
+            },
+        }
+    },
+)
+async def health() -> dict[str, str]:
     """Return a simple health status payload."""
-    return {"status": "ok"}
+    return HealthResponse(status="ok")
