@@ -1,14 +1,35 @@
 """Test {{ project_name }} REST API."""
 
+import logging
+
 import httpx
 from fastapi.testclient import TestClient
 
 from {{ project_name_snake_case }}.api import app
 
-client = TestClient(app)
-
 
 def test_read_root() -> None:
     """Test that reading the root is successful."""
-    response = client.get("/hello_world")
+    with TestClient(app) as client:
+        response = client.get("/hello_world")
     assert httpx.codes.is_success(response.status_code)
+
+
+def test_lifespan_removes_logging_handlers() -> None:
+    """Ensure the application's lifespan removes existing logging handlers."""
+    existing_handlers = list(logging.root.handlers)
+    temporary_handler = logging.NullHandler()
+    logging.root.addHandler(temporary_handler)
+
+    try:
+        assert temporary_handler in logging.root.handlers
+
+        with TestClient(app) as client:
+            response = client.get("/hello_world")
+        assert httpx.codes.is_success(response.status_code)
+        assert temporary_handler not in logging.root.handlers
+    finally:
+        for handler in list(logging.root.handlers):
+            logging.root.removeHandler(handler)
+        for handler in existing_handlers:
+            logging.root.addHandler(handler)
