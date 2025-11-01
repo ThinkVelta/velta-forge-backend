@@ -107,17 +107,17 @@ type = "simple"
   [tool.poe.tasks.serve]
   help = "Serve the REST API"
   shell = """
-    if [ $dev ]
-    then {
+    if [ "$dev" = "true" ] || [ "$dev" = "1" ]
+    then
       uvicorn \
-        --host $host \
-        --port $port \
+        --host "$host" \
+        --port "$port" \
         --reload \
         {{ project_name_snake_case }}.api:app
-    } else {
+    else
       gunicorn \
         --access-logfile - \
-        --bind $host:$port \
+        --bind "$host:$port" \
         --graceful-timeout 10 \
         --keep-alive 10 \
         --log-file - \
@@ -126,7 +126,7 @@ type = "simple"
         --worker-tmp-dir /dev/shm \
         --workers 2 \
         {{ project_name_snake_case }}.api:app
-    } fi
+    fi
     """
 
     [[tool.poe.tasks.serve.args]]
