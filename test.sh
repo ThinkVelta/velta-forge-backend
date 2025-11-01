@@ -4,7 +4,7 @@ set -e
 
 rm -rf my-project
 
-with_fastapi_api=("false" "true")
+with_fastapi_api=("true")  # TODO(Ruben): Add "false"
 
 for with_fastapi_api in "${with_fastapi_api[@]}"; do
     echo ""

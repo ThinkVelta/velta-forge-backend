@@ -27,18 +27,13 @@ app = FastAPI(lifespan=lifespan)
     "/health",
     summary="Health check",
     description="Perform a basic health check to confirm the API is responsive.",
-    response_model=HealthResponse,
     responses={
         200: {
             "description": "Service is healthy",
-            "content": {
-                "application/json": {
-                    "example": {"status": "ok"}
-                }
-            },
+            "content": {"application/json": {"example": {"status": "ok"}}},
         }
     },
 )
-async def health() -> dict[str, str]:
+async def health() -> HealthResponse:
     """Return a simple health status payload."""
     return HealthResponse(status="ok")
