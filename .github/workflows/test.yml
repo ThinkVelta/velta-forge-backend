@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: my-project
+          path: velta-forge-backend
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v6
@@ -32,7 +32,7 @@ jobs:
 
       - name: Scaffold Python project
         run: |
-          uvx copier copy --vcs-ref=HEAD . my-project \
+          uvx copier copy --vcs-ref=HEAD velta-forge-backend my-project \
             --defaults \
             --data project_name="My Project" \
             --data project_description="A dummy ${{ matrix.python-version }} Python project (with FastAPI API: ${{ matrix.with-fastapi-api }})." \
