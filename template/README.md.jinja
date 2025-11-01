@@ -19,8 +19,12 @@ and open [localhost:8000](http://localhost:8000) in your browser.
 Within the Dev Container this is equivalent to:
 
 ```sh
-poe serve
+poe serve{%- if with_fastapi_api %} --dev{%- endif %}
 ```
+{%- if with_fastapi_api %}
+
+Use `poe serve` without the `--dev` flag to run the production-ready server configuration.
+{%- endif %}
 
 ## Contributing
 
