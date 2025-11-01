@@ -1,0 +1,21 @@
+services:
+
+  devcontainer:
+    build:
+      target: dev
+    volumes:
+      - ..:/workspaces
+      - command-history-volume:/home/user/.history/
+
+  app:
+    build:
+      target: app
+    {%- if with_fastapi_api %}
+    ports:
+      - "8000:8000"
+    {%- endif %}
+    profiles:
+      - app
+
+volumes:
+  command-history-volume:

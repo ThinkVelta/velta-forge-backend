@@ -1,0 +1,98 @@
+name: Codex PR Reviewer
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  codex:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+    outputs:
+      final_message: ${{ steps.run_codex.outputs['final-message'] }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+
+      - name: Pre-fetch base and head refs for the PR
+        run: |
+          git fetch --no-tags origin \
+            ${{ github.event.pull_request.base.ref }} \
+            +refs/pull/${{ github.event.pull_request.number }}/head
+
+      - name: Fetch PR conversation
+        id: fetch_conversation
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          result-encoding: string
+          script: |
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number
+              }
+            );
+            return comments
+              .map(c => `@${c.user.login}: ${c.body}`)
+              .join('\n---\n');
+
+      - name: Run Codex
+        id: run_codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            This is PR #${{ github.event.pull_request.number }} for ${{ github.repository }}.
+            Base SHA: ${{ github.event.pull_request.base.sha }}
+            Head SHA: ${{ github.event.pull_request.head.sha }}
+
+            Review ONLY the changes introduced by the PR.
+            Suggest any improvements, potential bugs, or issues.
+            Be concise and specific in your feedback.
+            Write in markdown format, with a new title for each issue/topic you raise.
+            Include code snippets where appropriate, in properly formatted code blocks.
+            Analyze the conversation history to understand the context of the PR and previous feedback given. Give your new feedback in relation to this, highlighing what has been fixed and what has been missed, as well as any new issues that have been introduced.
+            
+            Format your feedback message as follows:
+              - A `## Summary` section, containing a tabular overview of the changes made (columns: `File` and `Description` where description is a single-sentence summary of the changes):
+                - If newly opened PR, give a summary of the changes introduced by the PR
+                - If existing PR got updated, give a summary of the changes between now and the last review
+              - A `## Feedback Overview` section, containing a tabular summary of the issues/topics you raised (columns: `File`, `Issue`, `Severity`, and `Summary` where issue is the issue/topic you raised, severity is the severity of the issue (low, medium, high), and summary is a single-sentence summary of the feedback/solution you proposed):
+              - A `## Feedback` section, containing your feedback for each of the issues/topics you raised. Add a dedicated subheading for each issue/topic you raised.
+
+            Pull request title and body:
+            ----
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.body }}
+
+            Conversation history:
+            ----
+            ${{ steps.fetch_conversation.outputs.result }}
+
+  post_feedback:
+    runs-on: ubuntu-latest
+    needs: codex
+    if: needs.codex.outputs.final_message != ''
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Report Codex feedback
+        uses: actions/github-script@v7
+        env:
+          CODEX_FINAL_MESSAGE: ${{ needs.codex.outputs.final_message }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: process.env.CODEX_FINAL_MESSAGE,
+            });

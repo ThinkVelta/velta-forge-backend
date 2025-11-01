@@ -1,0 +1,26 @@
+"""{{ project_name }} REST API."""
+
+import logging
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+    """Handle FastAPI startup and shutdown events."""
+    # Startup events.
+    for handler in logging.root.handlers:
+        logging.root.removeHandler(handler)
+    yield
+    # Shutdown events.
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/hello_world")
+async def hello_world() -> str:
+    """Return a dummy greeting."""
+    return "Hello World!"

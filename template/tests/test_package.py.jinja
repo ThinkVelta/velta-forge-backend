@@ -1,0 +1,16 @@
+"""Test the {{ project_name_kebab_case}} package."""
+
+from {{ project_name_snake_case }}.main import answer_to_anything
+
+EXPECTED_ANSWER = 42
+
+
+def test_type() -> None:
+    """Test that the output type is an integer."""
+    assert isinstance(answer_to_anything("Test"), int)
+
+
+def test_value() -> None:
+    """Test that the ouput equals the expected constant."""
+    assert answer_to_anything("Hello") == EXPECTED_ANSWER
+    assert answer_to_anything("World") == EXPECTED_ANSWER

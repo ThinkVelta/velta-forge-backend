@@ -1,0 +1,62 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    name: "Copier: Python ${{ matrix.python-version }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: my-project
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "**/uv.lock"
+
+      - name: Scaffold Python project
+        run: |
+          uvx copier copy --vcs-ref=HEAD . my-project \
+            --defaults \
+            --data project_name="My Project" \
+            --data project_description="A dummy Python project." \
+            --data project_url="https://github.com/user/repo" \
+            --data author_name="John Doe" \
+            --data author_email="john.doe@example.com" \
+            --data python_version="3.12" \
+            --data with_fastapi_api=true \
+          cd my-project
+          git config --global init.defaultBranch main
+          git init
+          git checkout -b test
+          git add .
+
+      - name: Lint and test project
+        uses: devcontainers/ci@v0.3
+        with:
+          subFolder: ./my-project/
+          runCmd: |
+            uv lock
+            poe lint
+            poe test
+
+      - name: Build app Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./my-project/
+          target: app

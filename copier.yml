@@ -1,0 +1,69 @@
+_subdirectory: template
+
+project_name:
+  type: str
+  help: What is your Project's name?
+  placeholder: "My Project"
+  validator: >-
+    {% if not project_name.strip() %}
+    Invalid project name
+    {% endif %}
+
+project_description:
+  type: str
+  help: What does your project do in one sentence?
+  placeholder: A Python project that reticulates splines.
+  validator: >-
+    {% if not project_description.strip() %}
+    Invalid project description
+    {% endif %}
+
+project_url:
+  type: str
+  help: What is the URL of your project's repository?
+  placeholder: https://github.com/user/project
+  validator: >-
+    {% if not project_url.startswith("https://") %}
+    Invalid project URL
+    {% endif %}
+
+author_name:
+  type: str
+  help: What is the name of your project's primary author?
+  placeholder: John Smith
+  validator: >-
+    {% if not author_name %}
+    Invalid author name
+    {% endif %}
+
+author_email:
+  type: str
+  help: What is the email address of your project's primary author?
+  placeholder: john@example.com
+  validator: >-
+    {% if not "@" in author_email %}
+    Invalid author email address
+    {% endif %}
+
+python_version:
+  type: str
+  help: What is the minimum Python version your project should support?
+  default: "3.12"
+
+with_fastapi_api:
+  type: bool
+  help: Does your project need a FastAPI backend?
+  default: true
+
+project_name_kebab_case:
+  when: false
+  default: "{{ project_name | lower | replace(' ', '-') }}"
+
+project_name_snake_case:
+  when: false
+  default: "{{ project_name | lower | replace(' ', '_') }}"
+
+documentation_url:
+  when: false
+  default: "{% if ci == 'github' %}https://{{ project_url.rstrip('/').split('/')[-2] }}.github.io/{{ project_url.rstrip('/').split('/')[-1] }}{% else %}{{ project_url }}{% endif %}"
+

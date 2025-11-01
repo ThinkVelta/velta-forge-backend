@@ -1,0 +1,54 @@
+{
+    "name": "substrate",
+    "image": "ghcr.io/astral-sh/uv:python3.10-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+        "ghcr.io/devcontainers-extra/features/devcontainers-cli:1": {},
+        "ghcr.io/devcontainers-extra/features/starship:1": {}
+    },
+    "remoteEnv": {
+        "VIRTUAL_ENV": "/opt/venv",
+        "PATH": "/opt/venv/bin:${containerEnv:PATH}",
+        "UV_PROJECT_ENVIRONMENT": "/opt/venv"
+    },
+    "onCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc",
+    "postCreateCommand": "uv sync && pre-commit install --install-hooks",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "charliermarsh.ruff",
+                "DavidAnson.vscode-markdownlint",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "GitHub.vscode-github-actions",
+                "GitHub.vscode-pull-request-github",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "tamasfe.even-better-toml",
+                "visualstudioexptteam.vscodeintellicode"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "[toml]": {
+                    "editor.formatOnSave": false
+                },
+                "editor.rulers": [
+                    100
+                ],
+                "files.autoSave": "onFocusChange",
+                "github.copilot.chat.agent.enabled": true,
+                "github.copilot.chat.codesearch.enabled": true,
+                "github.copilot.chat.edits.enabled": true,
+                "github.copilot.nextEditSuggestions.enabled": true,
+                "python.defaultInterpreterPath": "/opt/venv/bin/python",
+                "python.terminal.activateEnvironment": false,
+                "terminal.integrated.env.linux": {
+                    "GIT_EDITOR": "code --wait"
+                },
+                "terminal.integrated.env.mac": {
+                    "GIT_EDITOR": "code --wait"
+                }
+            }
+        }
+    }
+}
