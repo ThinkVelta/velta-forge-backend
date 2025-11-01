@@ -4,11 +4,14 @@ import httpx
 from fastapi.testclient import TestClient
 
 from {{ project_name_snake_case }}.api import app
+from {{ project_name_snake_case }}.api.basemodels import HealthResponse
 
 client = TestClient(app)
 
 
-def test_read_root() -> None:
-    """Test that reading the root is successful."""
-    response = client.get("/hello_world")
-    assert httpx.codes.is_success(response.status_code)
+def test_health_endpoint() -> None:
+    """Test that the health check returns the expected payload."""
+    response = client.get("/health")
+    assert response.status_code == httpx.codes.OK
+    data = HealthResponse.model_validate_json(response.text)
+    assert data.status == "ok"
