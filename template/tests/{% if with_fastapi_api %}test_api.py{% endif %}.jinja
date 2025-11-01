@@ -10,7 +10,7 @@ from {{ project_name_snake_case }}.api.basemodels import HealthResponse
 
 
 def test_read_root() -> None:
-    """Test that reading the root is successful."""
+    """Test that the health endpoint runs successful."""
     with TestClient(app) as client:
         response = client.get("/health")
     assert httpx.codes.is_success(response.status_code)
