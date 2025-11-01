@@ -14,13 +14,19 @@ docker compose up app
 {%- if with_fastapi_api %}
 
 and open [localhost:8000](http://localhost:8000) in your browser.
+
+The FastAPI application also provides a lightweight health check at [`/health`](http://localhost:8000/health) that returns `{"status": "ok"}`.
 {%- endif %}
 
 Within the Dev Container this is equivalent to:
 
 ```sh
-poe serve
+poe serve{%- if with_fastapi_api %} --dev{%- endif %}
 ```
+{%- if with_fastapi_api %}
+
+Use `poe serve` without the `--dev` flag to run the production-ready server configuration.
+{%- endif %}
 
 ## Contributing
 

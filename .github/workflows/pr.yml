@@ -56,6 +56,7 @@ jobs:
             Suggest any improvements, potential bugs, or issues.
             Be concise and specific in your feedback.
             Write in markdown format, with a new title for each issue/topic you raise.
+            When generating tables, make sure they're formatted correctly and don't forget the header separator row.
             Include code snippets where appropriate, in properly formatted code blocks.
             Analyze the conversation history to understand the context of the PR and previous feedback given. Give your new feedback in relation to this, highlighing what has been fixed and what has been missed, as well as any new issues that have been introduced.
             
@@ -71,7 +72,7 @@ jobs:
             ${{ github.event.pull_request.title }}
             ${{ github.event.pull_request.body }}
 
-            Conversation history:
+            Current PR's conversation history:
             ----
             ${{ steps.fetch_conversation.outputs.result }}
 

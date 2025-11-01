@@ -1,8 +1,8 @@
-name: Codex PR Reviewer
+name: Codex PR Change Summary
 on:
   pull_request:
     branches:
-      - dev
+      - main
     types: [opened, synchronize]
 
 jobs:
@@ -54,20 +54,18 @@ jobs:
             Base SHA: {% raw %}${{{% endraw %} github.event.pull_request.base.sha }}
             Head SHA: {% raw %}${{{% endraw %} github.event.pull_request.head.sha }}
 
-            Review ONLY the changes introduced by the PR.
-            Suggest any improvements, potential bugs, or issues.
-            Be concise and specific in your feedback.
-            Write in markdown format, with a new title for each issue/topic you raise.
+            Summarize all the changes between the previous version of this (`main`) branch, and the new edits made.
+            Write in markdown format, with dedicated sections in headers.
             When generating tables, make sure they're formatted correctly and don't forget the header separator row.
             Include code snippets where appropriate, in properly formatted code blocks.
-            Analyze the conversation history to understand the context of the PR and previous feedback given. Give your new feedback in relation to this, highlighing what has been fixed and what has been missed, as well as any new issues that have been introduced.
-            
-            Format your feedback message as follows:
-              - A `## Summary` section, containing a tabular overview of the changes made (columns: `File` and `Description` where description is a single-sentence summary of the changes):
-                - If newly opened PR, give a summary of the changes introduced by the PR
-                - If existing PR got updated, give a summary of the changes between now and the last review
-              - A `## Feedback Overview` section, containing a tabular summary of the issues/topics you raised (columns: `File`, `Issue`, `Severity`, and `Summary` where issue is the issue/topic you raised, severity is the severity of the issue (low, medium, high), and summary is a single-sentence summary of the feedback/solution you proposed). Keep the table empty if no issues/topics were raised. Sort the table by severity, with highest severity first.
-              - A `## Feedback` section, containing your feedback for each of the issues/topics you raised. Add a dedicated subheading for each issue/topic you raised. Keep the same order as the issues/topics in the `## Feedback Overview` section. Always make sure to provide a solution for each issue/topic you raised.
+            Analyze and incorporate the conversation history to understand the context of the PR and previous feedback given by the developer.
+
+            Format the change summary as follows:
+              - A `## TL;DR` section, summarizing what the edit is about in a single paragraph.
+              - A `## Change Overview` section, containing a tabular summary of the changes made (columns: `File`, `Summary`)
+              - A `## Core Changes` section, depicing the most important changes introduced by this PR. Create a dedicated subsection `### <My-Change>` for each change you want to mention.
+
+            Always review the complete change between the previous version of this (`main`) branch, and the latest version of the code found in this PR, even when the pull request got updated with new commits.
 
             Pull request title and body:
             ----
