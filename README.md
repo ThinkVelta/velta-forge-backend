@@ -21,20 +21,9 @@ Velta Forge (Backend) is Velta's official Copier template for bootstrapping mode
 - 🤖 **Automation** with GitHub Actions (PR checks, test matrix, optional deploy/publish) and Dependabot updates.
 - 🔐 **Production-friendly defaults** including environment variable management, gunicorn configuration, and Docker images ready for container platforms.
 
-## 📦 What's included
+## 🧑‍💻 Usage
 
-| Area | Details |
-| --- | --- |
-| Project scaffolding | `copier.yml` prompts for FastAPI API, project metadata, and documentation links.
-| Source layout | `src/` package with `main.py` entrypoint and optional `api/` module, plus `tests/` for pytest suites.
-| Tooling | `pyproject.toml` with FastAPI (optional), uv, Poe, pytest, Ruff, coverage, Commitizen, and pre-commit hooks.
-| Dev environment | `.devcontainer/`, Dockerfile, docker-compose services, and VS Code recommendations.
-| CI/CD | `.github/workflows/` for PR checks, change summary, testing, and optional deploy/publish jobs; `dependabot.yml` for automated upgrades.
-| Docs & metadata | Template `README.md`, `AGENTS.md`, `CHANGELOG.md`, and Linear/Codex-friendly defaults.
-
-## 🚀 Create a new backend service
-
-In order to make use of this template, make sure you complete all of the following steps:
+In order to make use of this template, make sure you complete **all** of the following steps:
 
 1. **Install prerequisites (one-time setup)**
    - [Docker Desktop](https://www.docker.com/get-started) or a compatible container runtime.
@@ -48,11 +37,23 @@ In order to make use of this template, make sure you complete all of the followi
 
 3. **Prepare your GitHub repository**
    - Make sure to have a `main` branch and a `dev` branch (*both required* for the CI/CD workflows to work).
+   - Set your `dev` branch as the default branch in your GitHub repository (`Settings` -> `General` -> `Default branch`), since new pull requests should be opened against the `dev` branch.
    - Set the `OPENAI_API_KEY` environment variable in your GitHub repository secrets (`Settings` -> `Secrets and variables` -> `Actions` -> `New repository secret`) to ensure the Codex AI agent can perform its job.
 
 4. **Open in your preferred environment**
    - Open the repository in a devcontainer by running **Dev Containers: Reopen in Container** in your IDE of choice (VSCode, Cursor, or Windsurf).
    - Alternatively, start a GitHub Codespace with the badge above.
+
+## 📦 What's included
+
+| Area | Details |
+| --- | --- |
+| Project scaffolding | `copier.yml` prompts for FastAPI API, project metadata, and documentation links.
+| Source layout | `src/` package with `main.py` entrypoint and optional `api/` module, plus `tests/` for pytest suites.
+| Tooling | `pyproject.toml` with FastAPI (optional), uv, Poe, pytest, Ruff, coverage, Commitizen, and pre-commit hooks.
+| Dev environment | `.devcontainer/`, Dockerfile, docker-compose services, and VS Code recommendations.
+| CI/CD | `.github/workflows/` for PR checks, change summary, testing, and optional deploy/publish jobs; `dependabot.yml` for automated upgrades.
+| Docs & metadata | Template `README.md`, `AGENTS.md`, `CHANGELOG.md`, and Linear/Codex-friendly defaults.
 
 ## 🧑‍💻 Developing inside the scaffold
 
@@ -70,15 +71,6 @@ Additional, these are the other most common commands you'll be using while devel
 - Use `uv add <package>` (`--dev` for dev dependencies) to manage dependencies.
 - Run `uv sync --upgrade` to update dependencies while respecting version pins.
 - Run `cz bump` to version releases following Conventional Commits.
-
-## 🛠 Maintaining the template
-
-If you make any changes to the template, make sure to:
-
-- Run `./test.sh` to validate the template renders, installs, and passes lint/test checks inside a Dev Container.
-- Develop in a feature branch and open a PR against the `main` branch.
-- Use `Squash & Merge` to merge your PRs after Codex + human approvals.
-- Bump the template version with `cz bump` and push the changes to the `main` branch.
 
 ## 🧭 Working the Velta Way
 
@@ -124,9 +116,10 @@ This template encodes Velta's engineering standards. Here are some tips and tric
    - Work with protected branches and protected files appropriately.
 
 5. **AI-first, human-owned**
-   - Initiate each new feature branches by feeding the Linear issue description to Codex or another AI agent, and iterate from there manually.
+   - Initiate each new feature branches by feeding your problem (like a Linear Issue description) to Codex or another AI agent, and iterate from there manually.
    - Keep `AGENTS.md` up to date so future AI collaborators follow the right conventions.
    - Use AI tools to accelerate development, but review and understand every change.
+   - Review the PR with Codex before merging. Give it time to finish, and interact with it in the PR comments if there's something you don't agree with. Note that Codex will only re-run on new commits, not on new comments.
 
 ## 🤝 Contributing to Velta Forge
 
@@ -136,6 +129,8 @@ We welcome improvements that make spinning up Velta backends faster or safer. Pl
 2. Work on a decicated feature branch addressing the issue, keeping commits conventional.
 3. Update documentation (README, AGENTS) whenever behavior changes.
 4. Run `./test.sh` and ensure GitHub Actions succeed before requesting review.
+5. Use `Squash & Merge` to merge your PRs after Codex + human approvals.
+6. Bump the template version with `cz bump` and push the changes to the `main` branch.
 
 Need help or spot something outdated? Tag me directly in your GitHub issue (`@RubenBroekx`).
 
