@@ -61,7 +61,7 @@ project_name_kebab_case:
     {{
       project_name
       | lower
-      | regex_replace('[^a-z]+', '-')
+      | regex_replace('[^a-z0-9]+', '-')
       | regex_replace('(^-|-$)', '')
     }}
 
@@ -71,7 +71,7 @@ project_name_snake_case:
     {{
       project_name
       | lower
-      | regex_replace('[^a-z]+', '_')
+      | regex_replace('[^a-z0-9]+', '_')
       | regex_replace('(^_|_$)', '')
     }}
 

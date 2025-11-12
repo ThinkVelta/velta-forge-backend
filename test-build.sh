@@ -3,7 +3,7 @@
 set -e
 
 # Set the parameters
-PROJECT_NAME="My - Project"
+PROJECT_NAME="My - 42nd - Project"
 PYTHON_VERSION="3.12"
 WITH_FASTAPI_API="true"
 
@@ -24,9 +24,7 @@ uvx copier copy --vcs-ref=HEAD . my-project \
 
 echo  -e "\nInitializing Git..."
 cd my-project
-git config --global init.defaultBranch main
-git init
-git checkout -b test
+git init --initial-branch=main
 git add .
 
 # Lint and test the project with a dev container
