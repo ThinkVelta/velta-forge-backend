@@ -57,13 +57,24 @@ with_fastapi_api:
 
 project_name_kebab_case:
   when: false
-  default: "{{ project_name | lower | replace(' ', '-') }}"
+  default: >-
+    {{
+      project_name
+      | lower
+      | regex_replace('[^a-z0-9]+', '-')
+      | regex_replace('(^-|-$)', '')
+    }}
 
 project_name_snake_case:
   when: false
-  default: "{{ project_name | lower | replace(' ', '_') }}"
+  default: >-
+    {{
+      project_name
+      | lower
+      | regex_replace('[^a-z0-9]+', '_')
+      | regex_replace('(^_|_$)', '')
+    }}
 
 documentation_url:
   when: false
   default: "https://{{ project_url.rstrip('/').split('/')[-2] }}.github.io/{{ project_url.rstrip('/').split('/')[-1] }}"
-
