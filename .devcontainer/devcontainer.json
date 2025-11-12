@@ -1,5 +1,5 @@
 {
-    "name": "substrate",
+    "name": "velta-forge-backend",
     "image": "ghcr.io/astral-sh/uv:python3.12-bookworm",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {},
