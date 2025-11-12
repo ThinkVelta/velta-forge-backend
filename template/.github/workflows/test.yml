@@ -16,7 +16,7 @@ jobs:
       matrix:
         python-version: ["{{ python_version }}"]
 
-    name: Python {% raw %}${{{% endraw %} matrix.python-version }}
+    name: Python ${{ matrix.python-version }}
 
     steps:
       - name: Checkout
@@ -35,7 +35,7 @@ jobs:
           git config --global init.defaultBranch main
           devcontainer up --workspace-folder .
         env:
-          PYTHON_VERSION: {% raw %}${{{% endraw %} matrix.python-version }}
+          PYTHON_VERSION: ${{ matrix.python-version }}
 
       - name: Lint
         run: devcontainer exec --workspace-folder . poe lint
