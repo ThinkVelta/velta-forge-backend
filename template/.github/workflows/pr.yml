@@ -7,6 +7,7 @@ on:
 
 jobs:
   codex:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,12 +45,24 @@ jobs:
               .map(c => `@${c.user.login}: ${c.body}`)
               .join('\n---\n');
 
+      - name: Fail fast on missing OPENAI_API_KEY
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "OPENAI_API_KEY is not set for this workflow run."
+            exit 1
+          fi
+
+      - name: Prepare Codex home
+        run: |
+          mkdir -p "$HOME/.codex"
+
       - name: Run Codex
         id: run_codex
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          allow-bots: true
           prompt: |
             This is PR #${{ github.event.pull_request.number }} for ${{ github.repository }}.
             Base SHA: ${{ github.event.pull_request.base.sha }}
