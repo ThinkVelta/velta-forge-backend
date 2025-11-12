@@ -60,6 +60,7 @@ USER user
 
 # Set the working directory.
 WORKDIR /workspaces/{{ project_name_kebab_case }}/
+ENV PYTHONPATH=/workspaces/{{ project_name_kebab_case }}/src
 
 # Copy the source code to the working directory.
 COPY --chown=user:user . .
