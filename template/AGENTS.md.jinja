@@ -24,7 +24,7 @@ Key files and directories in the generated project include:
 - `pyproject.toml` and `uv.lock` declare runtime and development dependencies.
 - `src/{{ project_name_snake_case }}/` holds the project's {%- if project_type == 'app' %}application {%- endif %}{%- if project_type == 'package' %}package {%- endif %}code.
   {%- if with_fastapi_api %}
-  - `api/` contains the FastAPI application, including `main.py` with the `/health` endpoint and
+  - `src/{{ project_name_snake_case }}_api/` contains the FastAPI application, including `main.py` with the `/health` endpoint and
     `basemodels.py` with the supporting Pydantic schemas.
   {%- endif %}
 - `tests/` contains pytest-based regression tests.

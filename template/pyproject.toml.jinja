@@ -113,7 +113,7 @@ type = "simple"
         --host "$host" \
         --port "$port" \
         --reload \
-        {{ project_name_snake_case }}.api:app
+        {{ project_name_snake_case }}_api:app
     else
       gunicorn \
         --access-logfile - \
@@ -125,7 +125,7 @@ type = "simple"
         --worker-class uvicorn.workers.UvicornWorker \
         --worker-tmp-dir /dev/shm \
         --workers 2 \
-        {{ project_name_snake_case }}.api:app
+        {{ project_name_snake_case }}_api:app
     fi
     """
 
