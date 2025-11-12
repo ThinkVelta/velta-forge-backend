@@ -1,18 +1,19 @@
 # Agents Guide
 
-This repository is a Copier template for bootstrapping {{ project_name }} projects. It ships with a
-containerized developer experience, uv-based dependency management, and automation for linting,
-testing, and packaging. Consult `README.md` for quickstart instructions once the project has been
-generated.
+{{ project_name }}: {{ project_description }}
+
+This repository hosts a containerized developer experience, with `uv`-based dependency management,
+and automations for linting, testing, and packaging.
 
 ## Project layout
 
 Key files and directories in the generated project include:
+
 - `.devcontainer/` builds the VS Code Dev Container, aligning local tooling with CI.
 - `.github/workflows/` contains the automation pipelines:
   - `test.yml` runs the lint and test matrix.
-  - `summary.yml` aggregates workflow results into a PR summary comment.
-  - `pr.yml` executes static analysis on pull requests.
+  - `summary.yml` aggregates workflow results into a PR summary comment (`main` <- `dev`).
+  - `pr.yml` executes static analysis on pull requests (`dev` <- `<feature-branch>`).
   {%- if project_type == 'app' %}
   - `deploy.yml` publishes the application image.
   {%- endif %}
@@ -21,8 +22,7 @@ Key files and directories in the generated project include:
   {%- endif %}
 - `Dockerfile` and `docker-compose.yml` orchestrate local services for development.
 - `pyproject.toml` and `uv.lock` declare runtime and development dependencies.
-- `src/{{ project_name_snake_case }}/` holds the application code:
-  - `main.py` exposes the `answer_to_anything` exemplar function.
+- `src/{{ project_name_snake_case }}/` holds the project's {%- if project_type == 'app' %}application {%- endif %}{%- if project_type == 'package' %}package {%- endif %}code.
   {%- if with_fastapi_api %}
   - `api/` contains the FastAPI application, including `main.py` with the `/health` endpoint and
     `basemodels.py` with the supporting Pydantic schemas.
@@ -47,7 +47,9 @@ Key files and directories in the generated project include:
   stays in sync.
 - Respect the public API exported from `src/{{ project_name_snake_case }}/__init__.py` when adding
   new modules.
-- Run `uv run poe lint` and `uv run poe test` before finishing your changes to ensure code style and
-  regression tests pass.
+- *IMPORTANT:* Run `uv run poe lint` and `uv run poe test` before finishing your changes to ensure 
+  code style and regression tests pass.
 - Preserve compatibility with existing Pydantic models and pytest fixtures.
 - Prefer meaningful commit messages that follow the Conventional Commits specification.
+- Analyze the codebase thoroughly for existing code that might help solve your problem, to keep
+  reusability of components high.
