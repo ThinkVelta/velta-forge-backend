@@ -3,10 +3,16 @@
 import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from importlib.metadata import PackageNotFoundError, version
 
 from fastapi import FastAPI
 
 from {{ project_name_snake_case }}.api.basemodels import HealthResponse
+
+try:
+    API_VERSION = version("{{ project_name_kebab_case }}")
+except PackageNotFoundError:
+    API_VERSION = "0.0.0"
 
 
 @asynccontextmanager
@@ -23,6 +29,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
 app = FastAPI(
     title="{{ project_name }} API",
     description="{{ project_description }}",
+    version=API_VERSION,
     docs_url="/",
     lifespan=lifespan,
 )
