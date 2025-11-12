@@ -17,13 +17,13 @@
         "vscode": {
             "extensions": [
                 "charliermarsh.ruff",
-                "DavidAnson.vscode-markdownlint",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
                 "GitHub.vscode-github-actions",
                 "GitHub.vscode-pull-request-github",
                 "ms-azuretools.vscode-docker",
                 "ms-python.python",
+                "openai.chatgpt",
                 "tamasfe.even-better-toml",
                 "visualstudioexptteam.vscodeintellicode"
             ],
