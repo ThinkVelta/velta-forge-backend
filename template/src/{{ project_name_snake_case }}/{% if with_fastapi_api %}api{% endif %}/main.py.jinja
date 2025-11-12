@@ -20,7 +20,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     # Shutdown events.
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="{{ project_name | replace('"', '\\"') }} API",
+    description="{{ project_description | replace('"', '\\"') }}",
+    docs_url="/",
+    lifespan=lifespan,
+)
 
 
 @app.get(
