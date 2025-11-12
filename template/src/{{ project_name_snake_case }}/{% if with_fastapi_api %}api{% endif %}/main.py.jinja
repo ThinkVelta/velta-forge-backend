@@ -3,6 +3,7 @@
 import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from importlib.metadata import version
 
 from fastapi import FastAPI
 
@@ -20,7 +21,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     # Shutdown events.
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="{{ project_name | replace('"', '\\"') | replace('\n', '\\n') | replace('\r', '\\r') }} API",
+    description="{{ project_description | replace('"', '\\"') | replace('\n', '\\n') | replace('\r', '\\r') }}",
+    version=version("{{ project_name_kebab_case }}"),
+    docs_url="/",
+    lifespan=lifespan,
+)
 
 
 @app.get(
