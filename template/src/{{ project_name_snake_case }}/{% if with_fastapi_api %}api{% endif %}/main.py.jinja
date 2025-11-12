@@ -21,8 +21,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
 
 
 app = FastAPI(
-    title="{{ project_name | replace('"', '\\"') }} API",
-    description="{{ project_description | replace('"', '\\"') }}",
+    title="{{ project_name }} API",
+    description="{{ project_description }}",
     docs_url="/",
     lifespan=lifespan,
 )
