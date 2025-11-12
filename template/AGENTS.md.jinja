@@ -1,0 +1,53 @@
+# Agents Guide
+
+This repository is a Copier template for bootstrapping {{ project_name }} projects. It ships with a
+containerized developer experience, uv-based dependency management, and automation for linting,
+testing, and packaging. Consult `README.md` for quickstart instructions once the project has been
+generated.
+
+## Project layout
+
+Key files and directories in the generated project include:
+- `.devcontainer/` builds the VS Code Dev Container, aligning local tooling with CI.
+- `.github/workflows/` contains the automation pipelines:
+  - `test.yml` runs the lint and test matrix.
+  - `summary.yml` aggregates workflow results into a PR summary comment.
+  - `pr.yml` executes static analysis on pull requests.
+  {%- if project_type == 'app' %}
+  - `deploy.yml` publishes the application image.
+  {%- endif %}
+  {%- if project_type == 'package' %}
+  - `publish.yml` builds and uploads the package to the configured index.
+  {%- endif %}
+- `Dockerfile` and `docker-compose.yml` orchestrate local services for development.
+- `pyproject.toml` and `uv.lock` declare runtime and development dependencies.
+- `src/{{ project_name_snake_case }}/` holds the application code:
+  - `main.py` exposes the `answer_to_anything` exemplar function.
+  {%- if with_fastapi_api %}
+  - `api/` contains the FastAPI application, including `main.py` with the `/health` endpoint and
+    `basemodels.py` with the supporting Pydantic schemas.
+  {%- endif %}
+- `tests/` contains pytest-based regression tests.
+- `poe` tasks in `pyproject.toml` wrap common workflows like serving, linting, and testing.
+- `CHANGELOG.md` documents release history following Conventional Commits.
+
+## Coding best practices
+
+- Target Python {{ python_version }} syntax with full type hints and NumPy-style docstrings.
+- Keep functions small, expressive, and side-effect free. Prefer dependency injection over globals.
+- Follow the configured Ruff rules (100 character lines, absolute imports, strict warnings). Run
+  `uv run poe lint` to autoformat and validate style before opening a pull request.
+- Maintain exhaustive automated coverage by updating `tests/` alongside code changes.
+- When extending FastAPI modules, keep response models in `basemodels.py` and reuse shared schemas
+  where practical.
+
+## Notes for AI agents
+
+- Add new dependencies via `uv add` (or `uv add --dev` for development requirements) so `uv.lock`
+  stays in sync.
+- Respect the public API exported from `src/{{ project_name_snake_case }}/__init__.py` when adding
+  new modules.
+- Run `uv run poe lint` and `uv run poe test` before finishing your changes to ensure code style and
+  regression tests pass.
+- Preserve compatibility with existing Pydantic models and pytest fixtures.
+- Prefer meaningful commit messages that follow the Conventional Commits specification.
