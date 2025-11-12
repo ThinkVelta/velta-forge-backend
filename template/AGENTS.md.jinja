@@ -13,7 +13,7 @@ Key files and directories in the generated project include:
 - `.github/workflows/` contains the automation pipelines:
   - `test.yml` runs the lint and test matrix.
   - `summary.yml` aggregates workflow results into a PR summary comment (`main` <- `dev`).
-  - `pr.yml` executes static analysis on pull requests (`dev` <- `<feature-branch>`).
+  - `pr.yml` executes a Codex-backed analysis on pull requests (`dev` <- `<feature-branch>`).
   {%- if project_type == 'app' %}
   - `deploy.yml` publishes the application image.
   {%- endif %}
